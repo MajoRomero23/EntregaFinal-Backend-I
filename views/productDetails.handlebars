@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="/css/styles.css"> 
+    <title>{{product.title}}</title>
+</head>
+<body>
+    <h1>{{product.title}}</h1>
+    <img src="/images/{{product.thumbnails.[0]}}" alt="{{product.title}}" style="max-width: 300px;">
+    <p>Precio: ${{product.price}}</p>
+    <p>Descripción: {{product.description}}</p>
+    <p>Categoría: {{product.category}}</p>
+    <p>Stock: {{product.stock}}</p>
+    <button style="display: block; color: white;" onclick="agregarAlCarrito('{{product._id}}')">Agregar al Carrito</button>
+
+
+    <script>
+        function agregarAlCarrito(productId) {
+            alert('Producto agregado al carrito: ' + productId);
+        }
+    </script>
+</body>
+</html>

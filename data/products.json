@@ -1,0 +1,59 @@
+[
+  {
+    "id": 3,
+    "title": "Ramo 1",
+    "description": "Descripción del Ramo 1",
+    "code": "ZACZ",
+    "price": 300,
+    "status": true,
+    "stock": 10,
+    "category": "Categoría I",
+    "thumbnails": [
+      "Ramo1.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Ramo 2",
+    "description": "Descripción del Ramo 2",
+    "code": "ZACX",
+    "price": 400,
+    "status": true,
+    "stock": 15,
+    "category": "Categoría II",
+    "thumbnails": [
+      "Ramo2.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Ramo 3",
+    "description": "Descripción del nuevo producto",
+    "code": "XXXX",
+    "price": 250,
+    "status": true,
+    "stock": 50,
+    "category": "Categoría Nueva",
+    "thumbnails": [
+      "Ramo3.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "sss",
+    "description": "sss",
+    "code": "sss",
+    "price": 3,
+    "stock": 3,
+    "category": "ddd"
+  },
+  {
+    "id": 7,
+    "title": "sss",
+    "description": "sss",
+    "code": "aa",
+    "price": 4,
+    "stock": 4,
+    "category": "ddd"
+  }
+]

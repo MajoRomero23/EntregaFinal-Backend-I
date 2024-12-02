@@ -1,0 +1,263 @@
+/*Formato básico de la web*/
+
+body {
+    font-family: montserrat;
+    margin: 0;
+    padding: 0;
+    background-color: #ffe3ed;
+}
+
+h1 {
+    color: black;
+    text-align: center;
+    padding: 30px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    background-color: white;
+    margin: 10px 0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+li img {
+    max-width: 50px;
+    border-radius: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: #69465C;
+}
+
+nav {
+    background-color: #fff5f8;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 8px;
+}
+
+nav .logo {
+    color: #62001c;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+nav .menu {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+nav .menu li a {
+    color:#564145;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-icon img {
+    width: 25px;
+    filter: invert(50%) sepia(20%) saturate(1000%) hue-rotate(240deg);
+}
+
+.cart-count {
+    background-color:#62001c;
+    border-radius: 50%;
+    color: white;
+    padding: 5px 8px;
+    font-size: 12px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+button {
+    background-color:#62001c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #890037;
+}
+
+#productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.product-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 1rem;
+    color: #ff6f96;
+    margin-bottom: 5px;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.product-delete-btn {
+    background-color: #ff6f96;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product-delete-btn:hover {
+    background-color: #a0003e;
+}
+
+
+#filterForm {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: row;
+    align-items: space-evenly;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+input, select, button, .btn-filter {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-filter {
+    background-color: #5e72e4;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-filter:hover {
+    background-color: #4953b8;
+}
+
+#productForm {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px auto;
+
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.product-group input, .product-group select, .btn-add {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-add {
+    background-color: #6c757d;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+    background-color: #5a6268;
+}
+
+
+#category {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+#category:hover {
+    border-color: #aaa;
+}
+
+#category:focus {
+    outline: none;
+    border-color: #666;
+}
+
+#testButtons {
+    margin: auto;
+    width: max-content;
+}

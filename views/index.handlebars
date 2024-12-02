@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Productos</title>
+</head>
+
+<body>
+
+    <h1>Lista de Ramos</h1>
+    <div>
+        <form action="/products" method="get">
+            <label for="limit">Límite:</label>
+            <input type="number" id="limit" name="limit" value="{{limit}}" min="1" />
+
+            <label for="limit">Página:</label>
+            <input type="number" id="page" name="page" value="{{page}}" min="1" />
+
+            <label for="sort">Ordenar por Precio</label>
+            <select name="sort" id="sort">
+                <option value="">Sin orden</option>
+                <option value="asc" {{#if (eq sort "asc" )}}selected{{/if}}>Ascendente</option>
+                <option value="desc" {{#if (eq sort "desc" )}}selected{{/if}}>Descendente</option>
+            </select>
+
+            <label for="query">Categoria:</label>
+            <select name="query" id="query">
+                <option value="">Todas las categorías</option>
+                <option value="Categoría I" {{#if (eq query "Categoría I" )}}selected{{/if}}>Categoría I</option>
+                <option value="Categoría II" {{#if (eq query "Categoría II" )}}selected{{/if}}>Categoría II</option>
+                <option value="Categoría III" {{#if (eq query "Categoría III" )}}selected{{/if}}>Categoría III</option>
+            </select>
+
+            <button type="submit">Aplicar Filtros</button>
+        </form>
+    </div>
+
+    <div id="ProductContainer">
+        <ul class="productList simple">
+            {{#each products}}
+            <li class="product-item">
+                <div class="product-info">
+                    <a href="/product/{{this._id}}">
+                        <h2 class="product-title">{{this.title}}</h2>
+                    </a>
+                    <img src="/images/{{this.thumbnails.[0]}}" alt="{{this.title}}" style="max-width: 300px;">
+                    <p class="product-price">${{this.price}}</p>
+                    <p class="product-description">{{this.description}}</p>
+                    <button class="add-to-cart" data-id="{{this._id}}">Agregar al carrito</button>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div>
+        {{#if hasPrevPage}}
+        <a href="/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}&query={{query}}">Página anterior</a>
+        {{/if}}
+        Página {{page}} de {{totalPages}}
+        {{#if hasNextPage}}
+        <a href="/products?limit{{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}">Página siguiente</a>
+        {{/if}}
+    </div>
+
+    <script>
+        let cartCount = 0; // Iniciamos el contador del carrito
+
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cartCount; // Actualiza el contador
+        }
+
+        // Escuchar el clic en el botón "Agregar al carrito"
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('add-to-cart')) {
+                cartCount++; // Incrementamos el contador
+                updateCartCount(); // Actualizamos el contador del carrito
+
+                const productId = event.target.getAttribute('data-id');
+                console.log(`Producto ${productId} agregado al carrito`);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

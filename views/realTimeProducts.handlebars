@@ -1,0 +1,215 @@
+<h1>Productos en Tiempo Real</h1>
+
+{{!-- Filtrado de productos --}}
+<div id="filterForm">
+    <h2>Filtrar Productos</h2>
+    <input type="number" id="limit" placeholder="Límite (ej. 10)">
+    <input type="number" id="page" placeholder="Página (ej. 1)">
+
+    <select id="sort">
+        <option value="">Ordenar por Precio</option>
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+    </select>
+
+    <select id="query">
+        <option value="">Selecciona una Categoría</option>
+        <option value="Categoría I">Categoría I</option>
+        <option value="Categoría II">Categoría II</option>
+        <option value="Categoría III">Categoría III</option>
+    </select>
+
+    <button onclick="applyFilters()">Aplicar Filtros</button>
+</div>
+
+
+<!-- Nuevo producto -->
+<div id="productForm">
+    <h2>Agregar un Nuevo Producto</h2>
+    <input type="text" id="title" placeholder="Título del producto" required>
+    <input type="text" id="description" placeholder="Descripción" required>
+    <input type="text" id="code" placeholder="Código" required>
+    <input type="number" id="price" placeholder="Precio" required>
+    <input type="number" id="stock" placeholder="Stock" required>
+
+    <select id="category" required>
+        <option value="">Selecciona una Categoría</option>
+        <option value="Categoría I">Categoría I</option>
+        <option value="Categoría II">Categoría II</option>
+        <option value="Categoría III">Categoría III</option>
+    </select>
+
+    <button onclick="addProduct()">Agregar Producto</button>
+</div>
+
+<div id="testButtons">
+    <button onclick="generateTestProducts()">Generar 20 Productos de Prueba</button>
+</div>
+
+
+
+<ul id="productList"></ul>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    // Lista de productos
+    socket.on('productList', (products) => {
+        console.log("Productos recibidos en el cliente:", products);
+
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+        products.forEach(product => {
+            const li = document.createElement('li');
+            li.classList.add('product-item');
+
+            const titleDiv = document.createElement('div');
+            titleDiv.classList.add('product-title');
+            titleDiv.textContent = product.title;
+
+            const priceDiv = document.createElement('div');
+            priceDiv.classList.add('product-price');
+            priceDiv.textContent = `Precio: $${product.price}`;
+
+            const descriptionDiv = document.createElement('div');
+            descriptionDiv.classList.add('product-description');
+            descriptionDiv.textContent = product.description;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.classList.add('product-delete-btn');
+            deleteButton.onclick = () => deleteProduct(product._id);
+
+            li.appendChild(titleDiv);
+            li.appendChild(priceDiv);
+            li.appendChild(descriptionDiv);
+            li.appendChild(deleteButton);
+            productList.appendChild(li);
+        });
+    });
+
+    // Aregar un nuevo producto
+    function addProduct() {
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const code = document.getElementById('code').value;
+        const price = document.getElementById('price').value;
+        const stock = document.getElementById('stock').value;
+        const category = document.getElementById('category').value;
+
+        if (title && description && code && price && stock && category) {
+            socket.emit('newProduct', {
+                title,
+                description,
+                code,
+                price: parseFloat(price),
+                stock: parseInt(stock),
+                category
+            });
+
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('code').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('stock').value = '';
+            document.getElementById('category').value = '';
+        } else {
+            alert("Por favor, completa todos los campos.");
+        }
+    }
+
+    function applyFilters() {
+        const limit = document.getElementById('limit').value;
+        const page = document.getElementById('page').value;
+        const sort = document.getElementById('sort').value;
+        const query = document.getElementById('query').value;
+
+        let url = `/api/products?`;
+        if (limit) url += `limit=${limit}&`;
+        if (page) url += `page=${page}&`;
+        if (sort) url += `sort=${sort}&`;
+        if (query) url += `query=${query}&`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Productos filtrados:", data.payload);
+                displayProducts(data.payload);
+            })
+            .catch(error => console.error("Error al aplicar filtros:", error));
+    }
+
+    function generateTestProducts() {
+        const confirmGeneration = confirm("¿Estás seguro de que quieres generar 20 productos de prueba?");
+        if (confirmGeneration) {
+            fetch('/api/products/generate', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error("Error al generar productos:", error));
+        }
+    }
+
+    // Borrando todos los productos
+    function deleteAllProducts() {
+        const confirmDeletion = confirm("¿Estás seguro de que quieres borrar todos los productos?");
+        if (confirmDeletion) {
+            fetch('/api/products/deleteAll', { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                    } else if (data.error) {
+                        alert("Error: " + data.error);
+                    } else {
+                        alert("Error inesperado al borrar productos");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al borrar productos:", error);
+                    alert("Error al borrar productos: " + error.message);
+                });
+        }
+    }
+
+
+    // Función para eliminar un producto por ID
+    function deleteProduct(productId) {
+        socket.emit('deleteProduct', productId);
+    }
+
+    function displayProducts(products) {
+        const productList = document.getElementById('productList');
+        productList.innerHTML = '';
+
+        products.forEach(product => {
+            const li = document.createElement('li');
+            li.classList.add('product-item');
+
+            const titleDiv = document.createElement('div');
+            titleDiv.classList.add('product-title');
+            titleDiv.textContent = product.title;
+
+            const priceDiv = document.createElement('div');
+            priceDiv.classList.add('product-price');
+            priceDiv.textContent = `Precio: $${product.price}`;
+
+            const descriptionDiv = document.createElement('div');
+            descriptionDiv.classList.add('product-description');
+            descriptionDiv.textContent = product.description;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.classList.add('product-delete-btn');
+            deleteButton.onclick = () => deleteProduct(product._id);
+
+            li.appendChild(titleDiv);
+            li.appendChild(priceDiv);
+            li.appendChild(descriptionDiv);
+            li.appendChild(deleteButton);
+            productList.appendChild(li);
+        });
+    }
+</script> 
